@@ -53,6 +53,15 @@ public class Triangle {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
+
+    public float[] getTriangleCoords() {
+        return triangleCoords;
+    }
+
+    public void setTriangleCoords(float[] triangleCoords) {
+        this.triangleCoords = triangleCoords;
+    }
+
     private float triangleCoords[] = {
 //             in counterclockwise order:
 //            0.0f,  0.622008459f, 0.0f,   // top
@@ -65,16 +74,17 @@ public class Triangle {
     private final int vertexCount = triangleCoords.length / COORDS_PER_VERTEX;
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    public float[] getColor() {
+    public RGBA getColor() {
         return color;
     }
 
-    public void setColor(float[] color) {
+    public void setColor(RGBA color) {
         this.color = color;
     }
 
-    private float color[] = //{0.0f, 0.0f, 0.0f};
-            {0.63671875f, 0.76953125f, 0.22265625f, 0.0f}; //defaultni barva
+    protected RGBA color = new RGBA ( 0.63671875f, 0.76953125f, 0.22265625f, 1.0f);
+//    private float color[] = //{0.0f, 0.0f, 0.0f};
+//            {}; //defaultni barva
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
@@ -149,7 +159,7 @@ public class Triangle {
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+        GLES20.glUniform4fv(mColorHandle, 1, color.getValues(), 0);
 
         // get handle to shape's transformation matrix
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");

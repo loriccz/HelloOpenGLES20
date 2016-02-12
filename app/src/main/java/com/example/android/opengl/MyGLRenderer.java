@@ -36,7 +36,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
     private Triangle mTriangle;
-    private Square   mSquare;
+//    private Square   mSquare;
+    private Stone mStone;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -52,18 +53,26 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+        GLES20.glEnable(GLES20.GL_BLEND);
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE);
         mTriangle = new Triangle(new Coord[] {
-                new Coord(0.0f,  0.322008459f, 0.0f),
-                new Coord(-0.2f, -0.151004243f, 0.0f),
-                new Coord(0.2f, -0.151004243f, 0.0f)
+                new Coord(0.0f,  0.622008459f, 0.0f),
+                new Coord(-0.5f, -0.301004243f, 0.0f),
+                new Coord(0.5f, -0.301004243f, 0.0f)
         });
-        mTriangle.setColor(new float[] { 0.63671875f, 0.76953125f, 0.22265625f, 0.0f });
-        mSquare   = new Square(new Coord[] {
-                new Coord(-1.0f,1.0f,0.0f),
-                new Coord(1.0f,-1.0f,0.0f)
+        mTriangle.setColor(new RGBA ( 1.0f, 0.0f, 0.0f, 1.0f ));
+//        mSquare   = new Square(new Coord[] {
 //                new Coord(-0.5f,0.5f,0.0f),
 //                new Coord(0.5f,-0.5f,0.0f)
-        });
+//        });
+//        mSquare.setColor(new float[] { 0.0f, 0.0f, 1.0f, 1.0f });
+//        mSquare.setSquareCoords( new float[] {
+//                -0.5f, 0.5f, 0.0f,
+//                -0.1f,-0.5f, 0.0f,
+//                 0.1f,-0.5f, 0.0f,
+//                 0.5f, 0.5f, 0.0f
+//        });
+        mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.0f,0.0f,1.0f));
     }
 
     @Override
@@ -80,7 +89,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw square
-        mSquare.draw(mMVPMatrix);
+        mStone.draw(mMVPMatrix);
 
         // Create a rotation for the triangle
 

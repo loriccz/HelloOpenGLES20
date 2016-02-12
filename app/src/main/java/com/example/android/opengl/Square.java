@@ -27,7 +27,7 @@ import android.util.Log;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Square {
+public class Square extends Triangle {
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -68,6 +68,15 @@ public class Square {
         return ret;
     }
 
+    public float[] getSquareCoords() {
+        return squareCoords;
+    }
+
+    public void setSquareCoords(float[] squareCoords) {
+        this.squareCoords = squareCoords;
+        updateVertexBuffer();
+    }
+
     private float squareCoords[] = {
             -1.6f,  1.0f, 0.0f,   // top left
             -1.6f, -1.0f, 0.0f,   // bottom left
@@ -78,41 +87,17 @@ public class Square {
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    public float[] getColor() {
-        return color;
-    }
-
-    public void setColor(float[] color) {
-        this.color = color;
-    }
-
-    public void setColorByName(String col){
-        if (col.equals("red")) {
-            this.color = new float[]{1.0f, 0.0f, 0.0f};
-        } else if (col.equals("green")) {
-            this.color = new float[]{0.0f, 1.0f, 0.0f};
-        } else if (col.equals("blue")) {
-            this.color = new float[]{0.0f, 0.0f, 1.0f};
-        } else if (col.equals("yellow")) {
-            this.color = new float[]{1.0f, 1.0f, 0.0f};
-        } else if (col.equals("magenta")) {
-            this.color = new float[]{1.0f, 0.0f, 1.0f};
-        } else if (col.equals("cyan")) {
-            this.color = new float[]{0.0f, 1.0f, 1.0f};
-        } else if (col.equals("black")) {
-            this.color = new float[]{0.0f, 0.0f, 0.0f};
-        } else this.color = new float[]{0.0f,0.0f,0.0f};
 
 
-    }
 
-    float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f }; //defaultni barva
+
+
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    private void BasicSetup() {
-        // initialize vertex byte buffer for shape coordinates
+
+    private void updateVertexBuffer() {
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
                 squareCoords.length * 4);
@@ -120,6 +105,11 @@ public class Square {
         vertexBuffer = bb.asFloatBuffer();
         vertexBuffer.put(squareCoords);
         vertexBuffer.position(0);
+    }
+
+    private void BasicSetup() {
+        // initialize vertex byte buffer for shape coordinates
+        updateVertexBuffer();
 
         // initialize byte buffer for the draw list
         ByteBuffer dlb = ByteBuffer.allocateDirect(
@@ -145,17 +135,17 @@ public class Square {
     }
 
     public Square() {
+        setColor(new RGBA( 0.2f, 0.709803922f, 0.898039216f, 1.0f )); //defaultni barva
         BasicSetup();
     }
 
     public Square(Coord[] corners) {
-
-        if (SetCorners(corners)==1) Log.d("procedura","selhalo nastaveni rohu");
+        setColor(new RGBA( 0.2f, 0.709803922f, 0.898039216f, 1.0f )); //defaultni barva
+        SetCorners(corners);
         BasicSetup();
     }
 
-    private int SetCorners(Coord[] corners) {
-//        Log.d("coordspre",getSquareCoordsString());
+    public void SetCorners(Coord[] corners) {
         if (corners.length == 2) {
             squareCoords[0] = corners[0].getX();
             squareCoords[1] = corners[0].getY();
@@ -172,9 +162,8 @@ public class Square {
             squareCoords[9] = corners[1].getX();
             squareCoords[10] = corners[0].getY();
             squareCoords[11] = corners[0].getZ();
-//            Log.d("coordspost",getSquareCoordsString());
-            return 0;
-        } else return 1;
+            updateVertexBuffer();
+        }
 
     }
 
@@ -210,7 +199,7 @@ public class Square {
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+        GLES20.glUniform4fv(mColorHandle, 1, color.getValues(), 0);
 
         // get handle to shape's transformation matrix
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
