@@ -36,7 +36,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
     private Triangle mTriangle;
-//    private Square   mSquare;
+    private Square   mSquare;
     private Stone mStone;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
@@ -60,19 +60,20 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 new Coord(-0.5f, -0.301004243f, 0.0f),
                 new Coord(0.5f, -0.301004243f, 0.0f)
         });
-        mTriangle.setColor(new RGBA ( 1.0f, 0.0f, 0.0f, 1.0f ));
-//        mSquare   = new Square(new Coord[] {
-//                new Coord(-0.5f,0.5f,0.0f),
-//                new Coord(0.5f,-0.5f,0.0f)
-//        });
-//        mSquare.setColor(new float[] { 0.0f, 0.0f, 1.0f, 1.0f });
-//        mSquare.setSquareCoords( new float[] {
-//                -0.5f, 0.5f, 0.0f,
-//                -0.1f,-0.5f, 0.0f,
-//                 0.1f,-0.5f, 0.0f,
-//                 0.5f, 0.5f, 0.0f
-//        });
+        mTriangle.setColor(new RGBA(0.0f, 0.0f, 1.0f, 1.0f));
+        mSquare   = new Square(new Coord[] {
+                new Coord(-0.5f,0.5f,0.0f),
+                new Coord(0.5f,-0.5f,0.0f)
+        });
+        mSquare.setColor(new RGBA( 0.0f, 0.0f, 1.0f, 1.0f ));
+        mSquare.setSquareCoords( new float[] {
+                -0.5f, 0.5f, 0.0f,
+                -0.1f,-0.5f, 0.0f,
+                 0.1f,-0.5f, 0.0f,
+                 0.5f, 0.5f, 0.0f
+        });
         mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.0f,0.0f,1.0f));
+        mStone.setSize(0.3d);
     }
 
     @Override
@@ -90,6 +91,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Draw square
         mStone.draw(mMVPMatrix);
+//        mSquare.draw(mMVPMatrix);
 
         // Create a rotation for the triangle
 
