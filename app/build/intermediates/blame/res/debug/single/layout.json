@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\watch\\android studio projects\\HelloOpenGLES20\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
+        "source": "C:\\watch\\android studio projects\\HelloOpenGLES20\\app\\src\\main\\res\\layout\\main.xml"
+    },
+    {
         "merged": "C:\\Users\\loric\\AndroidStudioProjects\\HelloOpenGLES20\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
         "source": "C:\\Users\\loric\\AndroidStudioProjects\\HelloOpenGLES20\\app\\src\\main\\res\\layout\\main.xml"
     }

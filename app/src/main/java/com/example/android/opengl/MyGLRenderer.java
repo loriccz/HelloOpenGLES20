@@ -72,8 +72,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                  0.1f,-0.5f, 0.0f,
                  0.5f, 0.5f, 0.0f
         });
-        mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.0f,0.0f,1.0f));
-        mStone.setSize(0.3d);
+        mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.1f,0.1f,1.0f));
+        mStone.setSize(0.6d);
     }
 
     @Override

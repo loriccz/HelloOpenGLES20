@@ -49,6 +49,17 @@ public class RGBA {
     }
     public RGBA (RGBA cln) { values = cln.values.clone(); }
 
+    public RGBA (FieldStoneType type) {
+        switch (type) {
+            case FREE:       values = new float[] {0.0f,0.0f,0.0f,1.0f}; break; //cerny
+            case FLOATING_R: values = new float[] {1.0f,0.0f,0.0f,1.0f}; break; //cerveny
+            case FLOATING_G: values = new float[] {0.0f,1.0f,0.0f,1.0f}; break; //zeleny
+            case FLOATING_B: values = new float[] {0.0f,0.0f,1.0f,1.0f}; break; //modry
+            case GROUNDED:   values = new float[] {0.5f,0.5f,0.5f,1.0f}; break;  //sedivy
+            case SPECIAL:    values = new float[] {0.7f,0.7f,0.3f,1.0f}; break; //oranzovy
+        }
+    }
+
     public float[] getValues() {
         return values;
     }

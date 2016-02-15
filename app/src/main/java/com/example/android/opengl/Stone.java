@@ -75,7 +75,7 @@ public class Stone extends Square{
 
 
 
-        this.squares[0].setColor(this.precalc_colors[0].modifyHSV(new float[]{0.0f, 0.0f, 0.8f}));
+        this.squares[0].setColor(this.precalc_colors[0].modifyHSV(new float[]{0.0f, -0.4f, 1.0f}));
 //                (new RGBA(0.9f, 0.6f, 0.6f, 1.0f)); //svetle cervena
 
         this.squares[1].setSquareCoords(new float[]{ //pravej polygon
@@ -87,7 +87,7 @@ public class Stone extends Square{
         );
 
 
-        this.squares[1].setColor(this.precalc_colors[1].modifyHSV(new float[] {0.0f,0.8f,0.0f}));
+        this.squares[1].setColor(this.precalc_colors[1].modifyHSV(new float[]{0.0f, 1.0f, 0.0f}));
 //                (new RGBA(0.9f, 0.2f, 0.2f, 1.0f)); //saturovana cervena
 
 
@@ -99,7 +99,8 @@ public class Stone extends Square{
                 }
         );
 
-        this.squares[2].setColor(new RGBA(0.6f, 0.1f, 0.1f, 1.0f)); //saturovana cervena tmava
+//        this.squares[2].setColor(new RGBA(0.6f, 0.1f, 0.1f, 1.0f)); //saturovana cervena tmava
+        this.squares[2].setColor(this.precalc_colors[2].modifyHSV(new float[]{0.0f, 1.0f, -0.6f})); //saturovana cervena tmava
 
         this.squares[3].setSquareCoords(new float[]{ //level polygon
                         ox, oy, 0.0f,
@@ -109,7 +110,8 @@ public class Stone extends Square{
                 }
         );
 
-        this.squares[3].setColor(new RGBA(0.4f, 0.1f, 0.1f, 1.0f)); //saturovana cervena tmava
+//        this.squares[3].setColor(new RGBA(0.4f, 0.1f, 0.1f, 1.0f)); // cervena tmava
+        this.squares[3].setColor(this.precalc_colors[3].modifyHSV(new float[]{0.0f,0.0f,-0.6f}));
 
         this.squares[4].setSquareCoords(new float[]{ //prostredni polygon
                         ox + shift, oy + shift, 0.0f,

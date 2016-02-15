@@ -2,5 +2,9 @@
     {
         "merged": "C:\\Users\\loric\\AndroidStudioProjects\\HelloOpenGLES20\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_launcher.png",
         "source": "C:\\Users\\loric\\AndroidStudioProjects\\HelloOpenGLES20\\app\\src\\main\\res\\drawable\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\watch\\android studio projects\\HelloOpenGLES20\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_launcher.png",
+        "source": "C:\\watch\\android studio projects\\HelloOpenGLES20\\app\\src\\main\\res\\drawable\\ic_launcher.png"
     }
 ]
