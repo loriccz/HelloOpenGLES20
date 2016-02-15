@@ -74,21 +74,110 @@ public class PlayPiece {
         FieldStone toadd;
         switch (pieceform) {
             case I_SHAPE :
-                toadd = new FieldStone(new Coord(center_x,center_y), this.getColor(), this.getContext(), this.getType());
-
-
-
+                this.parts = new FieldStone[4];
+                this.parts[0] = new FieldStone(center_column, center_row-1, this.getContext(), this.getType());
+                this.parts[1] = new FieldStone(center_column, center_row, this.getContext(), this.getType());
+                this.parts[2] = new FieldStone(center_column, center_row+1, this.getContext(), this.getType());
+                this.parts[3] = new FieldStone(center_column, center_row+2, this.getContext(), this.getType());
+                this.center = this.parts[1];
                 break;
+
+            case T_SHAPE:
+                this.parts = new FieldStone[4];
+                this.parts[0] = new FieldStone(center_column, center_row-1, this.getContext(), this.getType());
+                this.parts[1] = new FieldStone(center_column-1, center_row, this.getContext(), this.getType());
+                this.parts[2] = new FieldStone(center_column, center_row, this.getContext(), this.getType());
+                this.parts[3] = new FieldStone(center_column+1, center_row, this.getContext(), this.getType());
+                this.center = this.parts[2];
+                break;
+
+            case L_SHAPE:
+                this.parts = new FieldStone[4];
+                this.parts[0] = new FieldStone(center_column, center_row-1, this.getContext(), this.getType());
+                this.parts[1] = new FieldStone(center_column, center_row, this.getContext(), this.getType());
+                this.parts[2] = new FieldStone(center_column, center_row+1, this.getContext(), this.getType());
+                this.parts[3] = new FieldStone(center_column+1, center_row+1, this.getContext(), this.getType());
+                this.center = this.parts[1];
+                break;
+            case J_SHAPE:
+                this.parts = new FieldStone[4];
+                this.parts[0] = new FieldStone(center_column, center_row-1, this.getContext(), this.getType());
+                this.parts[1] = new FieldStone(center_column, center_row, this.getContext(), this.getType());
+                this.parts[2] = new FieldStone(center_column, center_row+1, this.getContext(), this.getType());
+                this.parts[3] = new FieldStone(center_column-1, center_row+1, this.getContext(), this.getType());
+                this.center = this.parts[1];
+                break;
+
+            case S_SHAPE: break;
+            case Z_SHAPE: break;
+            case PLUS_SHAPE: break;
+            case CORNER_SHAPE: break;
+
 
         }
         return false;
     }
 
-    private boolean canMergeStoneToContext(int x, int y) {
+//    private int[] rotateOffset(boolean clockwise, int[] src) {
+//        int tmpx=src[0];
+//        int tmpy=src[1];
+////        if (tmpx==0 && tmpy==0) return new int[]{0,0};
+//
+//        if (clockwise) return new int[]{-tmpy,tmpx};
+//            else return new int[]{tmpy,-tmpx};
+////        } else if (tmpx<0 && tmpy>0) {
+////            if (clockwise) return new int[]{-tmpy,tmpx};
+////            else return new int[]{tmpy, -tmpx};
+////        } else if (tmpx>0 && tmpy>0) {
+////            if (clockwise) return new int[]{-tmpy,tmpx}
+////        }
+//
+//    }
+
+    public void rotatePiece(boolean clockwise){
+        int cx = this.center.getPos_x();
+        int cy = this.center.getPos_y();
+        int tmpx, tmpy;
+        for (FieldStone rotated: this.getParts()) {
+            tmpx = rotated.getPos_x()-cx;
+            tmpy = rotated.getPos_y()-cy;
+            if (clockwise) {
+                rotated.setPos_x(cx - tmpy);
+                rotated.setPos_y(cy + tmpx);
+            } else {
+                rotated.setPos_x(cx+tmpy);
+                rotated.setPos_y(cy-tmpx);
+            }
+            rotated.updateValues();
+        }
+    }
+
+    private boolean canMergeStoneToContextOn(int x, int y) {
         if (context==null) return false;
         if (context.typeOn(x,y)==FieldStoneType.FREE) return true;
         return false;
     }
 
+    public boolean canMergePieceToContext(int shiftx, int shifty) {
+        boolean ret;
+        if (this.context==null) return false;
+        for (FieldStone fs: this.getParts()) {
+            if (!canMergeStoneToContextOn(fs.getPos_x()+shiftx,fs.getPos_y()+shifty)) return false;
+        }
+        return true;
+    }
 
+    public boolean canMovePiece(MoveDir dir) {
+        switch (dir) {
+            case UP: return canMergePieceToContext(0,-1);
+            case DOWN: return canMergePieceToContext(0,1);
+            case LEFT: return canMergePieceToContext(-1,0);
+            case RIGHT: return canMergePieceToContext(1,0);
+        }
+        return false;
+    }
+
+    public void draw(float[] mvpMatrix) {
+        for (FieldStone fs: this.getParts()) fs.draw(mvpMatrix);
+    }
 }

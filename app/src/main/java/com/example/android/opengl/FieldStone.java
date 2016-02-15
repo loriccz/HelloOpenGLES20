@@ -92,5 +92,16 @@ public class FieldStone extends Stone {
         }
     }
 
+    protected void updateValues() { //po upraveni pos_x/pos_y
+        if (this.context!=null) {
+            super.setPosition(new Coord(context.getTop_left_corner().getX()+pos_x*context.getColumnWidth(),
+                    context.getTop_left_corner().getY()+pos_y*context.getRowHeight() ));
+        }
+        super.updateValues();
+    }
 
+    @Override
+    public void draw(float[] mvpMatrix) {
+        super.draw(mvpMatrix);
+    }
 }

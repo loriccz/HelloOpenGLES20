@@ -48,7 +48,7 @@ public class Stone extends Square{
         this.updateValues();
     }
 
-    private void updateValues() {
+    protected void updateValues() {
         float ox = this.position.getX();
         float oy = this.position.getY();
         float shift = (float) (this.size*0.5*this.edge_size);

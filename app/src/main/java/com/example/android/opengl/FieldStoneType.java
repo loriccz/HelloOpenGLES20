@@ -5,4 +5,5 @@ package com.example.android.opengl;
  */
 public enum FieldStoneType {
     FREE, FLOATING_R, FLOATING_G, FLOATING_B, GROUNDED, SPECIAL
+    //floating a special se tykaj jen playpiece, grounded a free jsou na zemi (playfield)
 }

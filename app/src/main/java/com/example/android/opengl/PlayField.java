@@ -76,4 +76,12 @@ public class PlayField {
         if (fields[pos_y][pos_x]==null) return null; //index out of bounds?
         return fields[pos_y][pos_x].getType();
     }
+
+    public void draw(float[] mvpMatrix) {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLUMNS; x++) {
+                fields[y][x].draw(mvpMatrix);
+            }
+        }
+    }
 }
