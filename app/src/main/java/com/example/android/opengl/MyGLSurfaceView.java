@@ -15,18 +15,24 @@
  */
 package com.example.android.opengl;
 
+import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
  * This view can also be used to capture touch events, such as a user
  * interacting with drawn objects.
  */
-public class MyGLSurfaceView extends GLSurfaceView {
 
+//sem narveme hlavni loop
+public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback{
+    private static final String TAG = MyGLSurfaceView.class.getSimpleName();
     private final MyGLRenderer mRenderer;
+    private MainThread main_thread;
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -40,6 +46,14 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         // Render the view only when there is a change in the drawing data
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+        // adding the callback (this) to the surface holder to intercept events
+        getHolder().addCallback(this);
+
+        // make the GamePanel focusable so it can handle events
+        setFocusable(true);
+        main_thread = new MainThread(getHolder(), this);
+
     }
 
     private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
@@ -47,12 +61,35 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private float mPreviousY;
 
     @Override
-    public boolean onTouchEvent(MotionEvent e) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        main_thread.setRunning(true);
+        main_thread.start();
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        boolean retry = true;
+        while (retry) {
+            try {
+                main_thread.join();
+                retry = false;
+            } catch (InterruptedException e) {
+                // try again shutting down the thread
+            }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
         // MotionEvent reports input details from the touch screen
         // and other input controls. In this case, you are only
         // interested in events where the touch position changed.
 
-        float x = e.getX();
+        /*float x = e.getX();
         float y = e.getY();
 
         switch (e.getAction()) {
@@ -79,7 +116,16 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         mPreviousX = x;
         mPreviousY = y;
-        return true;
+        return true;*/
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getY() > getHeight() - 50) {
+                main_thread.setRunning(false);
+                ((Activity)getContext()).finish();
+            } else {
+                Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
+            }
+        }
+        return super.onTouchEvent(event);
     }
 
 }

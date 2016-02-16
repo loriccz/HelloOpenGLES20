@@ -18,20 +18,46 @@ package com.example.android.opengl;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 
-public class OpenGLES20Activity extends Activity {
+import java.util.Timer;
+
+public class OpenGLES20Activity extends Activity  {
 
     private GLSurfaceView mGLView;
+
+    private static final String TAG = OpenGLES20Activity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // requesting to turn the title OFF
+        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // making it full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+        // set our MainGamePanel as the View
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
         mGLView = new MyGLSurfaceView(this);
         setContentView(mGLView);
+
+        Log.d(TAG, "View added");
     }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "Destroying...");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "Stopping...");
+        super.onStop();
+    }
+
+
 
     @Override
     protected void onPause() {

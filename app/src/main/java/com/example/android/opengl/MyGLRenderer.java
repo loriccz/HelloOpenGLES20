@@ -34,10 +34,10 @@ import android.util.Log;
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    private static final String TAG = "MyGLRenderer";
-    private Triangle mTriangle;
+    private static final String TAG = MyGLRenderer.class.getSimpleName();
+    /*private Triangle mTriangle;
     private Square   mSquare;
-    private Stone mStone;
+    private Stone mStone;*/
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -53,9 +53,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE);
-        mTriangle = new Triangle(new Coord[] {
+        GLES20.glEnable(GLES20.GL_BLEND); //scitani barev
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE); //modra+cervena = fialova
+
+        /*mTriangle = new Triangle(new Coord[] {
                 new Coord(0.0f,  0.622008459f, 0.0f),
                 new Coord(-0.5f, -0.301004243f, 0.0f),
                 new Coord(0.5f, -0.301004243f, 0.0f)
@@ -73,7 +74,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                  0.5f, 0.5f, 0.0f
         });
         mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.1f,0.1f,1.0f));
-        mStone.setSize(0.6d);
+        mStone.setSize(0.6d);*/
     }
 
     @Override
@@ -89,26 +90,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-        // Draw square
-        mStone.draw(mMVPMatrix);
+
+        //tady by se melo zavolat vykresleni vsech veci?
+
+//        mStone.draw(mMVPMatrix);
 //        mSquare.draw(mMVPMatrix);
 
-        // Create a rotation for the triangle
 
-        // Use the following code to generate constant rotation.
-        // Leave this code out when using TouchEvents.
-        // long time = SystemClock.uptimeMillis() % 4000L;
-        // float angle = 0.090f * ((int) time);
-
-        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
-
-        // Combine the rotation matrix with the projection and camera view
-        // Note that the mMVPMatrix factor *must be first* in order
-        // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-
-        // Draw triangle
-        mTriangle.draw(scratch);
     }
 
     @Override
@@ -168,20 +156,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-    /**
-     * Returns the rotation angle of the triangle shape (mTriangle).
-     *
-     * @return - A float representing the rotation angle.
-     */
-    public float getAngle() {
-        return mAngle;
-    }
 
-    /**
-     * Sets the rotation angle of the triangle shape (mTriangle).
-     */
-    public void setAngle(float angle) {
-        mAngle = angle;
-    }
 
 }
