@@ -39,8 +39,9 @@ public class OpenGLES20Activity extends Activity  {
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-        mGLView = new MyGLSurfaceView(this);
-        setContentView(mGLView);
+//        mGLView = new MyGLSurfaceView(this);
+//        setContentView(mGLView);
+        setContentView(R.layout.main);
 
         Log.d(TAG, "View added");
     }
@@ -66,7 +67,7 @@ public class OpenGLES20Activity extends Activity  {
         // If your OpenGL application is memory intensive,
         // you should consider de-allocating objects that
         // consume significant memory here.
-        mGLView.onPause();
+//        mGLView.onPause();
     }
 
     @Override
@@ -75,6 +76,6 @@ public class OpenGLES20Activity extends Activity  {
         // The following call resumes a paused rendering thread.
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
-        mGLView.onResume();
+//        mGLView.onResume();
     }
 }

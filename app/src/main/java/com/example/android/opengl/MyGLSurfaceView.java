@@ -18,6 +18,7 @@ package com.example.android.opengl;
 import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -34,8 +35,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
     private final MyGLRenderer mRenderer;
     private MainThread main_thread;
 
-    public MyGLSurfaceView(Context context) {
-        super(context);
+    public MyGLSurfaceView(Context context, AttributeSet attribs) {
+        super(context, attribs);
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
