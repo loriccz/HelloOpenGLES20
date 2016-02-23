@@ -38,6 +38,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangle;
     private Square   mSquare;
     private Stone mStone;
+    private PlayKeypad left_keypad, right_keypad;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -64,25 +65,30 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_BLEND); //scitani barev
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE); //modra+cervena = fialova
 
-        mTriangle = new Triangle(new Coord[] {
-                new Coord(0.0f,  0.622008459f, 0.0f),
-                new Coord(-0.5f, -0.301004243f, 0.0f),
-                new Coord(0.5f, -0.301004243f, 0.0f)
-        });
-        mTriangle.setColor(new RGBA(0.0f, 0.0f, 1.0f, 1.0f));
-        mSquare   = new Square(new Coord[] {
-                new Coord(-0.5f,0.5f,0.0f),
-                new Coord(0.5f,-0.5f,0.0f)
-        });
-        mSquare.setColor(new RGBA( 0.0f, 0.0f, 1.0f, 1.0f ));
-        mSquare.setSquareCoords( new float[] {
-                -0.5f, 0.5f, 0.0f,
-                -0.1f,-0.5f, 0.0f,
-                 0.1f,-0.5f, 0.0f,
-                 0.5f, 0.5f, 0.0f
-        });
+//        mTriangle = new Triangle(new Coord[] {
+//                new Coord(0.0f,  0.622008459f, 0.0f),
+//                new Coord(-0.5f, -0.301004243f, 0.0f),
+//                new Coord(0.5f, -0.301004243f, 0.0f)
+//        });
+//        mTriangle.setColor(new RGBA(0.0f, 0.0f, 1.0f, 1.0f));
+//        mTriangle = new Triangle(new float[]{0.0f,0.0f,1.0f,1.0f,0.0f,1.0f},true, new RGBA(0.0f,0.0f,1.0f,1.0f));
+//        mTriangle.transformScale(0.1f,0.1f,0.1f);
+//        mSquare   = new Square(new Coord[] {
+//                new Coord(-0.5f,0.5f,0.0f),
+//                new Coord(0.5f,-0.5f,0.0f)
+//        });
+//        mSquare.setColor(new RGBA( 0.0f, 0.0f, 1.0f, 1.0f ));
+//        mSquare.setSquareCoords( new float[] {
+//                -0.5f, 0.5f, 0.0f,
+//                -0.1f,-0.5f, 0.0f,
+//                 0.1f,-0.5f, 0.0f,
+//                 0.5f, 0.5f, 0.0f
+//        });
         mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.1f,0.1f,1.0f));
         mStone.setSize(0.6d);
+
+        this.left_keypad = new PlayKeypad(true, new Coord(0.0f,0.0f ));
+//        this.right_keypad = new PlayKeypad(false, new Coord(1.0f,0.0f));
     }
 
     @Override
@@ -102,7 +108,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //tady by se melo zavolat vykresleni vsech veci?
 
         mStone.draw(mMVPMatrix);
-        mSquare.draw(mMVPMatrix);
+        left_keypad.draw(mMVPMatrix);
+//        right_keypad.draw(mMVPMatrix);
+//        mSquare.draw(mMVPMatrix);
 
 
         // Create a rotation for the triangle
@@ -112,16 +120,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // long time = SystemClock.uptimeMillis() % 4000L;
         // float angle = 0.090f * ((int) time);
 
-        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
+//        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+//        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
         // Draw triangle
-        mTriangle.draw(scratch);
-
+//        mTriangle.draw(scratch);
+//        mTriangle.draw(mMVPMatrix);
 
     }
 

@@ -89,7 +89,8 @@ public class Triangle {
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    private void BasicSetup() {
+
+    private void UpdateCache() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (number of coordinate values * 4 bytes per float)
@@ -103,6 +104,9 @@ public class Triangle {
         vertexBuffer.put(triangleCoords);
         // set the buffer to read the first coordinate
         vertexBuffer.position(0);
+    }
+    private void BasicSetup() {
+        UpdateCache();
 
         // prepare shaders and OpenGL program
         int vertexShader = MyGLRenderer.loadShader(
@@ -153,7 +157,7 @@ public class Triangle {
 
         }
         this.setColor(color);
-
+        BasicSetup();
     }
 
     public void transformMove(float dx, float dy, float dz) {
@@ -162,12 +166,16 @@ public class Triangle {
             this.triangleCoords[i*3+1] = this.triangleCoords[i*3+1] + dy;
             this.triangleCoords[i*3+2] = this.triangleCoords[i*3+2] + dz;
         }
+        UpdateCache(); //resource intenzive? TODO zvyknout si a naucit se pouzivat tranformacni matice
     }
 
-    public void transformScale(float dx, float dy, float dz) {
-        float sx = this.triangleCoords[0];
-        float sy = this.triangleCoords[1];
-        float sz = this.triangleCoords[2];
+    public void transformScale(float dx, float dy, float dz, Coord origin) {
+//        float sx = this.triangleCoords[0];
+//        float sy = this.triangleCoords[1];
+//        float sz = this.triangleCoords[2];
+        float sx = origin.getX();
+        float sy = origin.getY();
+        float sz = origin.getZ();
         this.transformMove(-sx,-sy,-sz);
         for (int i=0; i<3; i++) {
             this.triangleCoords[i*3] = this.triangleCoords[i*3] * dx;
@@ -175,6 +183,7 @@ public class Triangle {
             this.triangleCoords[i*3+2] = this.triangleCoords[i*3+2] * dz;
         }
         this.transformMove(sx,sy,sz);
+        UpdateCache();
     }
 
     /**
