@@ -19,6 +19,8 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.Timer;
 
@@ -32,16 +34,16 @@ public class OpenGLES20Activity extends Activity  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // requesting to turn the title OFF
-        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         // making it full screen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // set our MainGamePanel as the View
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-//        mGLView = new MyGLSurfaceView(this);
-//        setContentView(mGLView);
-        setContentView(R.layout.main);
+        mGLView = new MyGLSurfaceView(this);
+        setContentView(mGLView);
+//        setContentView(R.layout.main);
 
         Log.d(TAG, "View added");
     }
@@ -67,7 +69,7 @@ public class OpenGLES20Activity extends Activity  {
         // If your OpenGL application is memory intensive,
         // you should consider de-allocating objects that
         // consume significant memory here.
-//        mGLView.onPause();
+        mGLView.onPause();
     }
 
     @Override
@@ -76,6 +78,6 @@ public class OpenGLES20Activity extends Activity  {
         // The following call resumes a paused rendering thread.
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
-//        mGLView.onResume();
+        mGLView.onResume();
     }
 }

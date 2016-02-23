@@ -22,6 +22,7 @@ public class MainThread extends Thread {
             tickCount++;
             // update game state
             // render state to the screen
+
         }
         Log.d(TAG, "Game loop executed " + tickCount + " times");
     }

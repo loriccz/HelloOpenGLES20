@@ -35,7 +35,30 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
     private final MyGLRenderer mRenderer;
     private MainThread main_thread;
 
-    public MyGLSurfaceView(Context context, AttributeSet attribs) {
+
+
+
+
+    public MyGLSurfaceView(Context context) {
+        super(context);
+        setEGLContextClientVersion(2);
+
+        // Set the Renderer for drawing on the GLSurfaceView
+        mRenderer = new MyGLRenderer();
+        setRenderer(mRenderer);
+
+        // Render the view only when there is a change in the drawing data
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+        // adding the callback (this) to the surface holder to intercept events
+        getHolder().addCallback(this);
+
+        // make the GamePanel focusable so it can handle events
+        setFocusable(true);
+        main_thread = new MainThread(getHolder(), this);
+    }
+
+    /*public MyGLSurfaceView(Context context, AttributeSet attribs) {
         super(context, attribs);
 
         // Create an OpenGL ES 2.0 context.
@@ -55,7 +78,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         setFocusable(true);
         main_thread = new MainThread(getHolder(), this);
 
-    }
+    }*/
 
     private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
     private float mPreviousX;
@@ -90,10 +113,10 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         // and other input controls. In this case, you are only
         // interested in events where the touch position changed.
 
-        /*float x = e.getX();
-        float y = e.getY();
+        float x = event.getX();
+        float y = event.getY();
 
-        switch (e.getAction()) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
 
                 float dx = x - mPreviousX;
@@ -117,16 +140,17 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
 
         mPreviousX = x;
         mPreviousY = y;
-        return true;*/
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        return true;
+        /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (event.getY() > getHeight() - 50) {
                 main_thread.setRunning(false);
                 ((Activity)getContext()).finish();
             } else {
                 Log.d(TAG, "Coords: x=" + event.getX() + ",y=" + event.getY());
+                requestRender();
             }
         }
-        return super.onTouchEvent(event);
+        return super.onTouchEvent(event);*/
     }
 
 }
