@@ -84,14 +84,15 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
     private float mPreviousX;
     private float mPreviousY;
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-    }
+//    @Override
+//    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         main_thread.setRunning(true);
         main_thread.start();
+        super.surfaceCreated(holder);
     }
 
     @Override
@@ -105,6 +106,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
                 // try again shutting down the thread
             }
         }
+        super.surfaceDestroyed(holder);
     }
 
     @Override
@@ -113,7 +115,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         // and other input controls. In this case, you are only
         // interested in events where the touch position changed.
 
-        float x = event.getX();
+        /*float x = event.getX();
         float y = event.getY();
 
         switch (event.getAction()) {
@@ -140,8 +142,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
 
         mPreviousX = x;
         mPreviousY = y;
-        return true;
-        /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        return true;*/
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (event.getY() > getHeight() - 50) {
                 main_thread.setRunning(false);
                 ((Activity)getContext()).finish();
@@ -150,7 +152,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
                 requestRender();
             }
         }
-        return super.onTouchEvent(event);*/
+        return super.onTouchEvent(event);
     }
 
 }
