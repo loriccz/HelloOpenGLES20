@@ -81,8 +81,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                  0.1f,-0.5f, 0.0f,
                  0.5f, 0.5f, 0.0f
         });
-//        mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.1f,0.1f,1.0f));
-//        mStone.setSize(0.6d);
+        mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.1f,0.1f,1.0f));
+        mStone.setSize(0.6d);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         //tady by se melo zavolat vykresleni vsech veci?
 
-//        mStone.draw(mMVPMatrix);
+        mStone.draw(mMVPMatrix);
         mSquare.draw(mMVPMatrix);
 
 

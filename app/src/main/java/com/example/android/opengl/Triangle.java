@@ -133,6 +133,50 @@ public class Triangle {
         BasicSetup();
     }
 
+    public Triangle(float[] floats, boolean is2d, RGBA color) {
+
+        if (is2d) {
+            this.triangleCoords[0] = floats[0];
+            this.triangleCoords[1] = floats[1];
+            this.triangleCoords[2] = 0.0f;
+            this.triangleCoords[3] = floats[2];
+            this.triangleCoords[4] = floats[3];
+            this.triangleCoords[5] = 0.0f;
+            this.triangleCoords[6] = floats[4];
+            this.triangleCoords[7] = floats[5];
+            this.triangleCoords[8] = 0.0f;
+
+        } else {
+            for (int i=0; i<9; i++) {
+                this.triangleCoords[i] = floats[i];
+            }
+
+        }
+        this.setColor(color);
+
+    }
+
+    public void transformMove(float dx, float dy, float dz) {
+        for (int i=0; i<3; i++) {
+            this.triangleCoords[i*3] = this.triangleCoords[i*3] + dx;
+            this.triangleCoords[i*3+1] = this.triangleCoords[i*3+1] + dy;
+            this.triangleCoords[i*3+2] = this.triangleCoords[i*3+2] + dz;
+        }
+    }
+
+    public void transformScale(float dx, float dy, float dz) {
+        float sx = this.triangleCoords[0];
+        float sy = this.triangleCoords[1];
+        float sz = this.triangleCoords[2];
+        this.transformMove(-sx,-sy,-sz);
+        for (int i=0; i<3; i++) {
+            this.triangleCoords[i*3] = this.triangleCoords[i*3] * dx;
+            this.triangleCoords[i*3+1] = this.triangleCoords[i*3+1] * dy;
+            this.triangleCoords[i*3+2] = this.triangleCoords[i*3+2] * dz;
+        }
+        this.transformMove(sx,sy,sz);
+    }
+
     /**
      * Encapsulates the OpenGL ES instructions for drawing this shape.
      *
