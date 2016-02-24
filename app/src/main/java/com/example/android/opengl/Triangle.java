@@ -162,27 +162,21 @@ public class Triangle {
 
     public void transformMove(float dx, float dy, float dz) {
         for (int i=0; i<3; i++) {
-            this.triangleCoords[i*3] = this.triangleCoords[i*3] + dx;
-            this.triangleCoords[i*3+1] = this.triangleCoords[i*3+1] + dy;
-            this.triangleCoords[i*3+2] = this.triangleCoords[i*3+2] + dz;
+            this.triangleCoords[i*3] +=  dx;
+            this.triangleCoords[i*3+1] +=  dy;
+            this.triangleCoords[i*3+2] +=  dz;
         }
         UpdateCache(); //resource intenzive? TODO zvyknout si a naucit se pouzivat tranformacni matice
     }
 
     public void transformScale(float dx, float dy, float dz, Coord origin) {
-//        float sx = this.triangleCoords[0];
-//        float sy = this.triangleCoords[1];
-//        float sz = this.triangleCoords[2];
-        float sx = origin.getX();
-        float sy = origin.getY();
-        float sz = origin.getZ();
-        this.transformMove(-sx,-sy,-sz);
+        this.transformMove(-origin.getX(),-origin.getY(),-origin.getZ());
         for (int i=0; i<3; i++) {
-            this.triangleCoords[i*3] = this.triangleCoords[i*3] * dx;
-            this.triangleCoords[i*3+1] = this.triangleCoords[i*3+1] * dy;
-            this.triangleCoords[i*3+2] = this.triangleCoords[i*3+2] * dz;
+            this.triangleCoords[i*3] *=  dx;
+            this.triangleCoords[i*3+1] *=  dy;
+            this.triangleCoords[i*3+2] *=  dz;
         }
-        this.transformMove(sx,sy,sz);
+        this.transformMove(origin.getX(),origin.getY(),origin.getZ());
         UpdateCache();
     }
 

@@ -90,20 +90,20 @@ public class RGBA {
 
     public RGBA modifyHSV(float[] factor) { //-1..1 psycho.. uvidime
         RGBA ret = new RGBA();
-        Log.d(RGBADEBUG,"factors:"+factor[0]+" "+factor[1]+" "+factor[2]);
-        Log.d(RGBADEBUG,"pre R:"+this.R()+" G:"+this.G()+" B:"+this.B());
+//        Log.d(RGBADEBUG,"factors:"+factor[0]+" "+factor[1]+" "+factor[2]);
+//        Log.d(RGBADEBUG,"pre R:"+this.R()+" G:"+this.G()+" B:"+this.B());
         if (factor.length!=3) return ret;
         float[] hsv = new float[3];
         int r = (int) (this.R()*256);
         int g = (int) (this.G()*256);
         int b = (int) (this.B()*256);
-        Log.d(RGBADEBUG,"converted r:"+r+" g:"+g+" b"+b);
+//        Log.d(RGBADEBUG,"converted r:"+r+" g:"+g+" b"+b);
 
         android.graphics.Color.RGBToHSV(r, g, b, hsv);
         float h = hsv[0];
         float s = hsv[1];
         float v = hsv[2];
-        Log.d(RGBADEBUG,"HSVpre h:"+hsv[0]+" s:"+hsv[1]+" v:"+hsv[2]);
+//        Log.d(RGBADEBUG,"HSVpre h:"+hsv[0]+" s:"+hsv[1]+" v:"+hsv[2]);
         for (int i=1; i<=2; i++) {
             if (factor[i]>0) {
                 hsv[i] += factor[i]*(1-hsv[i]);
@@ -114,12 +114,12 @@ public class RGBA {
         if (factor[0]>0) hsv[0]+=factor[0]*(360-hsv[0]);
         else if (factor[0]<0) hsv[0]+=factor[0]*hsv[0];
 
-        Log.d(RGBADEBUG,"HSVpost h:"+hsv[0]+" s:"+hsv[1]+" v:"+hsv[2]);
+//        Log.d(RGBADEBUG,"HSVpost h:"+hsv[0]+" s:"+hsv[1]+" v:"+hsv[2]);
         int tmp = android.graphics.Color.HSVToColor(hsv);
-        Log.d(RGBADEBUG,"tmp: "+tmp+ "red component:"+android.graphics.Color.red(tmp)+
+        /*Log.d(RGBADEBUG,"tmp: "+tmp+ "red component:"+android.graphics.Color.red(tmp)+
                 "green component:"+android.graphics.Color.green(tmp)+
                 "blue component:"+android.graphics.Color.blue(tmp)
-        );
+        );*/
         ret.setValues(new float[] {
                 (float)android.graphics.Color.red(tmp)/256,
                 (float)android.graphics.Color.green(tmp)/256,

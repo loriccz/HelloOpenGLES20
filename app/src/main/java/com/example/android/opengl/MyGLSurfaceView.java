@@ -143,7 +143,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         mPreviousX = x;
         mPreviousY = y;
         return true;*/
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+      /*  if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (event.getY() > getHeight() - 50) {
                 main_thread.setRunning(false);
                 ((Activity)getContext()).finish();
@@ -152,7 +153,56 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
                 requestRender();
             }
         }
+        return super.onTouchEvent(event);*/
+
+        int dimx = this.getHeight();
+        int dimy = this.getWidth();
+        float ratio = (float)dimx/(float)dimy;
+        MoveDir left_pad_dir=MoveDir.INVALID,right_pad_dir = MoveDir.INVALID;
+
+        if (event.getAction()==MotionEvent.ACTION_UP) {
+            //reset all buttons
+//            mRenderer.left_keypad.pressAllArrows(false);
+//            mRenderer.right_keypad.pressAllArrows(false);
+        }
+        else {
+            int count=event.getPointerCount();
+            float vx1=0.0f,vy1=0.0f,vx2=0.0f, vy2=0.0f;
+            float glx1 = 0.0f, glx2 = 0.0f, gly1 = 0.0f, gly2 = 0.0f;
+
+            if (count>=1) {
+                vx1 = event.getX(0)/dimx;
+                vy1 = event.getY(0)/dimy;
+                glx1 = (vx1-0.5f)*ratio;
+                gly1 = (vy1-0.5f);
+            }
+            if (count>=2) {
+                vx2 = event.getX(1)/dimx;
+                vy2 = event.getY(1)/dimy;
+                glx2 = (vx2-0.5f)*ratio;
+                gly2 = (vy2-0.5f);
+            }
+            Log.d(TAG, "Vx1: "+vx1+ " Vy1:"+vy1+" GLX1:"+glx1+" GLY1:"+gly1);
+            Log.d(TAG, "Vx2: "+vx2+ " Vy2:"+vy2+" GLX2:"+glx2+" GLY2:"+gly2);
+//
+//            MoveDir tmp_dir1 = mRenderer.left_keypad.onPress(glx1,gly1);
+//            MoveDir tmp_dir2 = mRenderer.right_keypad.onPress(glx1,gly1);
+//
+//            MoveDir tmp_dir3 = mRenderer.left_keypad.onPress(glx2,gly2);
+//            MoveDir tmp_dir4 = mRenderer.right_keypad.onPress(glx2,gly2);
+//
+//            if (tmp_dir1!=MoveDir.INVALID) left_pad_dir = tmp_dir1;
+//            if (tmp_dir3!=MoveDir.INVALID) left_pad_dir = tmp_dir3;
+//
+//            if (tmp_dir2!=MoveDir.INVALID) right_pad_dir = tmp_dir2;
+//            if (tmp_dir4!=MoveDir.INVALID) right_pad_dir = tmp_dir4;
+//
+//            if (left_pad_dir!=MoveDir.INVALID) mRenderer.left_keypad.pressArrow(left_pad_dir,true);
+//            if (right_pad_dir!=MoveDir.INVALID) mRenderer.right_keypad.pressArrow(right_pad_dir,true);
+        }
+
         return super.onTouchEvent(event);
+
     }
 
 }

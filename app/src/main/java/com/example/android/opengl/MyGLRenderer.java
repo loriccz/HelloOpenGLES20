@@ -37,8 +37,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = MyGLRenderer.class.getSimpleName();
     private Triangle mTriangle;
     private Square   mSquare;
-    private Stone mStone;
-    private PlayKeypad left_keypad, right_keypad;
+    private Stone mStone,mStone2;
+    public PlayKeypad left_keypad, right_keypad;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -84,11 +84,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //                 0.1f,-0.5f, 0.0f,
 //                 0.5f, 0.5f, 0.0f
 //        });
-        mStone = new Stone(new Coord(-0.5f, -0.5f),new RGBA(0.9f,0.1f,0.1f,1.0f));
-        mStone.setSize(0.6d);
+        mStone = new Stone(new Coord(-0.4f, -0.4f),new RGBA(0.1f,0.8f,0.1f,1.0f)); //zeleny
+        mStone.setSize(1.0f);
+        mStone2 = new Stone(new Coord(0.0f, 0.0f),new RGBA(0.8f,0.1f,0.1f,1.0f)); //cerveny
+        mStone2.setSize(1.0f);
 
-        this.left_keypad = new PlayKeypad(true, new Coord(0.0f,0.0f ));
-//        this.right_keypad = new PlayKeypad(false, new Coord(1.0f,0.0f));
+        this.left_keypad = new PlayKeypad(true, new Coord(-0.98f,-0.58f));
+        this.right_keypad = new PlayKeypad(false, new Coord(0.45f,-0.58f));
     }
 
     @Override
@@ -99,7 +101,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0,
+                0, 0, 3, //camera coord //original -3
+                0f, 0f, 0f, //center coord
+                0f, 1.0f, 0.0f);  //up vector coord //original kladne 1
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
@@ -108,8 +113,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //tady by se melo zavolat vykresleni vsech veci?
 
         mStone.draw(mMVPMatrix);
+        mStone2.draw(mMVPMatrix);
         left_keypad.draw(mMVPMatrix);
-//        right_keypad.draw(mMVPMatrix);
+        right_keypad.draw(mMVPMatrix);
 //        mSquare.draw(mMVPMatrix);
 
 

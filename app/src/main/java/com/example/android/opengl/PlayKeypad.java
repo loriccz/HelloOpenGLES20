@@ -1,11 +1,14 @@
 package com.example.android.opengl;
 
+import android.util.Log;
+
 /**
  * Created by MAREK on 23.2.2016.
  */
 public class PlayKeypad extends Triangle {
+    private static final String TAG = PlayKeypad.class.getSimpleName();
     //je pouze zobrazovaci container kterymu se posilaj zmeny pri eventech zachycenejch jinde
-    private static final float DEFAULT_SIZE = -0.5f;
+    private static final float DEFAULT_SIZE = 0.3f;
 
     private Triangle arrows[];
     private Coord origin;
@@ -21,15 +24,13 @@ public class PlayKeypad extends Triangle {
         this.size = DEFAULT_SIZE;
 //nasetit velikost 1 od pocatku nula, na konci vsechny parametry preskalovat hromadne velikosti a pricist origin(pocatek)
         arrows = new Triangle[] {
-            //leva horni sipka rotace vlevo
-                new Triangle(new float[]{0.0f,0.0f,1.0f,1.0f,0.75f,0.5f}, true, lighter_c),
-                new Triangle(new float[]{0.0f,0.0f,0.5f,0.75f,1.0f,1.0f}, true, darker_c),
-
+            /*//leva horni sipka rotace vlevo
+            new Triangle(new float[]{0.0f,0.0f,1.0f,1.0f,0.75f,0.5f}, true, lighter_c),
+            new Triangle(new float[]{0.0f,0.0f,0.5f,0.75f,1.0f,1.0f}, true, darker_c),
 
             //leva dolni sipka posun vlevo
-
             new Triangle(new float[]{0.0f,1.5f,1.0f,1.5f,0.75f,1.25f}, true, lighter_c),
-                new Triangle(new float[]{0.0f,1.5f,0.75f,1.75f,1.0f,1.5f}, true, darker_c),
+            new Triangle(new float[]{0.0f,1.5f,0.75f,1.75f,1.0f,1.5f}, true, darker_c),
 
             //velka sipka uprostred smer dolu
             new Triangle(new float[]{1.5f,0.0f,1.0f,0.5f,1.5f,2.0f}, true, lighter_c),
@@ -41,26 +42,42 @@ public class PlayKeypad extends Triangle {
 
             //posun vpravo
             new Triangle(new float[]{2.0f,1.5f,3.0f,1.5f,2.25f,1.25f}, true, lighter_c),
-            new Triangle(new float[]{2.0f,1.5f,2.25f,1.75f,3.0f,1.5f}, true, darker_c)
+            new Triangle(new float[]{2.0f,1.5f,2.25f,1.75f,3.0f,1.5f}, true, darker_c)*/
+                //leva horni sipka rotace vlevo
+                new Triangle(new float[]{0.0f,2.0f,1.0f,1.0f,0.75f,1.5f}, true, lighter_c),
+                new Triangle(new float[]{0.0f,2.0f,0.5f,1.25f,1.0f,1.0f}, true, darker_c),
+
+                //leva dolni sipka posun vlevo
+                new Triangle(new float[]{0.0f,0.5f,1.0f,0.5f,0.75f,0.75f}, true, lighter_c),
+                new Triangle(new float[]{0.0f,0.5f,0.75f,0.25f,1.0f,0.5f}, true, darker_c),
+
+                //velka sipka uprostred smer dolu
+                new Triangle(new float[]{1.5f,2.0f,1.0f,1.5f,1.5f,0.0f}, true, lighter_c),
+                new Triangle(new float[]{1.5f,2.0f,1.5f,0.0f,2.0f,1.5f}, true, darker_c),
+
+                //rotace vpravo
+                new Triangle(new float[]{2.0f,1.0f,3.0f,2.0f,2.25f,1.5f}, true, lighter_c),
+                new Triangle(new float[]{2.0f,1.0f,2.5f,1.25f,3.0f,2.0f}, true, darker_c),
+
+                //posun vpravo
+                new Triangle(new float[]{2.0f,0.5f,3.0f,0.5f,2.25f,0.75f}, true, lighter_c),
+                new Triangle(new float[]{2.0f,0.5f,2.25f,0.25f,3.0f,0.5f}, true, darker_c)
         };
 
         for (Triangle arrow: arrows) {
             arrow.transformScale(this.size, this.size, this.size, this.origin);
             arrow.transformMove(this.origin.getX(), this.origin.getY(), this.origin.getZ());
         }
-
     }
-
-
 
     public PlayKeypad (boolean is_left, Coord origin) {
         this.left = is_left;
         this.origin = origin;
         BasicSetup();
-
     }
 
     public void pressAllArrows(boolean pressed) {
+        Log.d(TAG,"press all arrows called" );
         RGBA lighter, darker;
         if (pressed) {
             lighter = this.lighter_pc;
@@ -77,6 +94,7 @@ public class PlayKeypad extends Triangle {
     }
 
     public void pressArrow(MoveDir direction, boolean pressed) {
+        Log.d(TAG, "pressArrow called with dir:"+direction.toString());
         RGBA lighter, darker;
         if (pressed) {
             lighter = this.lighter_pc;
@@ -112,6 +130,21 @@ public class PlayKeypad extends Triangle {
                 this.arrows[9].setColor(darker);
                 break;
         }
+    }
+
+    public MoveDir onPress(float x, float y) {
+        float sz = this.size;
+
+
+        float ox = this.origin.getX();
+        float oy = this.origin.getY();
+
+        if (x>ox && x<ox+sz && y>oy && y<oy+sz) return MoveDir.ROTATE_LEFT;
+        if (x>ox && x<ox+sz && y>oy+sz && y<oy+sz+sz) return MoveDir.LEFT;
+        if (x>ox+sz && x<ox+sz+sz && y>oy && y<oy+sz+sz) return MoveDir.DOWN;
+        if (x>ox+sz+sz && x<ox+sz+sz+sz && y>oy && y<oy+sz) return MoveDir.ROTATE_RIGHT;
+        if (x>ox+sz+sz && x<ox+sz+sz+sz && y>oy+sz && y<oy+sz+sz) return MoveDir.ROTATE_RIGHT;
+        return MoveDir.INVALID;
     }
 
     @Override
