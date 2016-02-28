@@ -93,6 +93,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         main_thread.setRunning(true);
         main_thread.start();
         super.surfaceCreated(holder);
+        Log.d(TAG,"Created surface, dimensions - x:"+this.getWidth()+ " y:"+this.getHeight());
     }
 
     @Override
@@ -114,6 +115,33 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         // MotionEvent reports input details from the touch screen
         // and other input controls. In this case, you are only
         // interested in events where the touch position changed.
+
+        /*switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Log.d(TAG, "action down");
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                Log.d(TAG, "action pointer down");
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                Log.d(TAG, "action pointer up");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.d(TAG, "action move");
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.d(TAG, "action up");
+                break;
+
+        }
+
+        float x = event.getX();
+        float y = event.getY();
+
+        Log.d(TAG, "x:"+x+" y:"+y);
+
+
+        return true;*/
 
         /*float x = event.getX();
         float y = event.getY();
@@ -173,35 +201,39 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
             if (count>=1) {
                 vx1 = event.getX(0)/dimx;
                 vy1 = event.getY(0)/dimy;
-                glx1 = (vx1-0.5f)*ratio;
-                gly1 = (vy1-0.5f);
+                glx1 = (vx1-0.5f)*2*ratio;
+                gly1 = (vy1-0.5f)*2;
             }
             if (count>=2) {
                 vx2 = event.getX(1)/dimx;
                 vy2 = event.getY(1)/dimy;
-                glx2 = (vx2-0.5f)*ratio;
-                gly2 = (vy2-0.5f);
+                glx2 = (vx2-0.5f)*2*ratio;
+                gly2 = (vy2-0.5f)*2;
             }
             Log.d(TAG, "Vx1: "+vx1+ " Vy1:"+vy1+" GLX1:"+glx1+" GLY1:"+gly1);
             Log.d(TAG, "Vx2: "+vx2+ " Vy2:"+vy2+" GLX2:"+glx2+" GLY2:"+gly2);
-//
-//            MoveDir tmp_dir1 = mRenderer.left_keypad.onPress(glx1,gly1);
-//            MoveDir tmp_dir2 = mRenderer.right_keypad.onPress(glx1,gly1);
-//
-//            MoveDir tmp_dir3 = mRenderer.left_keypad.onPress(glx2,gly2);
-//            MoveDir tmp_dir4 = mRenderer.right_keypad.onPress(glx2,gly2);
-//
-//            if (tmp_dir1!=MoveDir.INVALID) left_pad_dir = tmp_dir1;
-//            if (tmp_dir3!=MoveDir.INVALID) left_pad_dir = tmp_dir3;
-//
-//            if (tmp_dir2!=MoveDir.INVALID) right_pad_dir = tmp_dir2;
-//            if (tmp_dir4!=MoveDir.INVALID) right_pad_dir = tmp_dir4;
-//
-//            if (left_pad_dir!=MoveDir.INVALID) mRenderer.left_keypad.pressArrow(left_pad_dir,true);
-//            if (right_pad_dir!=MoveDir.INVALID) mRenderer.right_keypad.pressArrow(right_pad_dir,true);
+
+            MoveDir tmp_dir1 = mRenderer.left_keypad.onPress(glx1,gly1);
+            MoveDir tmp_dir2 = mRenderer.right_keypad.onPress(glx1,gly1);
+
+            MoveDir tmp_dir3 = mRenderer.left_keypad.onPress(glx2,gly2);
+            MoveDir tmp_dir4 = mRenderer.right_keypad.onPress(glx2,gly2);
+
+
+
+            if (tmp_dir1!=MoveDir.INVALID) left_pad_dir = tmp_dir1;
+            if (tmp_dir3!=MoveDir.INVALID) left_pad_dir = tmp_dir3;
+
+            if (tmp_dir2!=MoveDir.INVALID) right_pad_dir = tmp_dir2;
+            if (tmp_dir4!=MoveDir.INVALID) right_pad_dir = tmp_dir4;
+
+//            Log.d(TAG, "Left pad:"+left_pad_dir.toString()+ "Right pad:"+right_pad_dir.toString());
+
+            if (left_pad_dir!=MoveDir.INVALID) mRenderer.left_keypad.pressArrow(left_pad_dir,true);
+            if (right_pad_dir!=MoveDir.INVALID) mRenderer.right_keypad.pressArrow(right_pad_dir,true);
         }
 
-        return super.onTouchEvent(event);
+        return true;
 
     }
 
