@@ -8,7 +8,8 @@ import android.util.Log;
 public class PlayKeypad extends Triangle {
     private static final String TAG = PlayKeypad.class.getSimpleName();
     //je pouze zobrazovaci container kterymu se posilaj zmeny pri eventech zachycenejch jinde
-    private static final float DEFAULT_SIZE = 0.3f;
+    private static final float DEFAULT_SIZE = 0.5f;
+
 
     private Triangle arrows[];
     private Coord origin;
@@ -24,50 +25,34 @@ public class PlayKeypad extends Triangle {
         this.size = DEFAULT_SIZE;
 //nasetit velikost 1 od pocatku nula, na konci vsechny parametry preskalovat hromadne velikosti a pricist origin(pocatek)
         arrows = new Triangle[] {
-            /*//leva horni sipka rotace vlevo
-            new Triangle(new float[]{0.0f,0.0f,1.0f,1.0f,0.75f,0.5f}, true, lighter_c),
-            new Triangle(new float[]{0.0f,0.0f,0.5f,0.75f,1.0f,1.0f}, true, darker_c),
 
-            //leva dolni sipka posun vlevo
-            new Triangle(new float[]{0.0f,1.5f,1.0f,1.5f,0.75f,1.25f}, true, lighter_c),
-            new Triangle(new float[]{0.0f,1.5f,0.75f,1.75f,1.0f,1.5f}, true, darker_c),
-
-            //velka sipka uprostred smer dolu
-            new Triangle(new float[]{1.5f,0.0f,1.0f,0.5f,1.5f,2.0f}, true, lighter_c),
-            new Triangle(new float[]{1.5f,0.0f,1.5f,2.0f,2.0f,0.5f}, true, darker_c),
-
-            //rotace vpravo
-            new Triangle(new float[]{2.0f,1.0f,3.0f,0.0f,2.25f,0.5f}, true, lighter_c),
-            new Triangle(new float[]{2.0f,1.0f,2.5f,0.75f,3.0f,0.0f}, true, darker_c),
-
-            //posun vpravo
-            new Triangle(new float[]{2.0f,1.5f,3.0f,1.5f,2.25f,1.25f}, true, lighter_c),
-            new Triangle(new float[]{2.0f,1.5f,2.25f,1.75f,3.0f,1.5f}, true, darker_c)*/
-                //leva horni sipka rotace vlevo
-                new Triangle(new float[]{0.0f,2.0f,1.0f,1.0f,0.75f,1.5f}, true, lighter_c),
-                new Triangle(new float[]{0.0f,2.0f,0.5f,1.25f,1.0f,1.0f}, true, darker_c),
+                new Triangle(new float[]{0.00f,0.66f,0.33f,0.33f,0.25f,0.50f}, true, lighter_c),
+                new Triangle(new float[]{0.00f,0.66f,0.16f,0.41f,0.33f,0.33f}, true, darker_c),
 
                 //leva dolni sipka posun vlevo
-                new Triangle(new float[]{0.0f,0.5f,1.0f,0.5f,0.75f,0.75f}, true, lighter_c),
-                new Triangle(new float[]{0.0f,0.5f,0.75f,0.25f,1.0f,0.5f}, true, darker_c),
+                new Triangle(new float[]{0.00f,0.16f,0.33f,0.16f,0.25f,0.25f}, true, lighter_c),
+                new Triangle(new float[]{0.00f,0.16f,0.25f,0.08f,0.33f,0.16f}, true, darker_c),
 
                 //velka sipka uprostred smer dolu
-                new Triangle(new float[]{1.5f,2.0f,1.0f,1.5f,1.5f,0.0f}, true, lighter_c),
-                new Triangle(new float[]{1.5f,2.0f,1.5f,0.0f,2.0f,1.5f}, true, darker_c),
+                new Triangle(new float[]{0.50f,0.66f,0.33f,0.50f,0.50f,0.00f}, true, lighter_c),
+                new Triangle(new float[]{0.50f,0.66f,0.50f,0.00f,0.66f,0.50f}, true, darker_c),
 
                 //rotace vpravo
-                new Triangle(new float[]{2.0f,1.0f,3.0f,2.0f,2.25f,1.5f}, true, lighter_c),
-                new Triangle(new float[]{2.0f,1.0f,2.5f,1.25f,3.0f,2.0f}, true, darker_c),
+                new Triangle(new float[]{0.66f,0.33f,1.00f,0.66f,0.75f,0.50f}, true, lighter_c),
+                new Triangle(new float[]{0.66f,0.33f,0.86f,0.41f,1.00f,0.66f}, true, darker_c),
 
                 //posun vpravo
-                new Triangle(new float[]{2.0f,0.5f,3.0f,0.5f,2.25f,0.75f}, true, lighter_c),
-                new Triangle(new float[]{2.0f,0.5f,2.25f,0.25f,3.0f,0.5f}, true, darker_c)
+                new Triangle(new float[]{0.66f,0.16f,1.00f,0.16f,0.75f,0.25f}, true, lighter_c),
+                new Triangle(new float[]{0.66f,0.16f,0.75f,0.08f,1.00f,0.16f}, true, darker_c)
         };
 
+
+
         for (Triangle arrow: arrows) {
-            arrow.transformScale(this.size, this.size, this.size, this.origin);
+
             arrow.transformMove(this.origin.getX(), this.origin.getY(), this.origin.getZ());
         }
+
     }
 
     public PlayKeypad (boolean is_left, Coord origin) {
@@ -132,18 +117,26 @@ public class PlayKeypad extends Triangle {
         }
     }
 
-    public MoveDir onPress(float x, float y) {
-        float sz = this.size;
+    public MoveDir onPress(float x, float y) { //nejsou to glx souradnice
 
+//upraveno na tyhlety non-gl souradnice
 
-        float ox = this.origin.getX();
-        float oy = this.origin.getY();
+//        float ox = this.origin.getX();
+//        float oy = this.origin.getY();
+//
+//        float wx = this.szx/3;
+//        float wy = this.szy/2;
+        float ox = this.left ? 0.0f : 0.5f;
+        float oy = 1.0f;
 
-        if (x>ox && x<ox+sz && y>oy && y<oy+sz) return MoveDir.ROTATE_LEFT;
-        if (x>ox && x<ox+sz && y>oy+sz && y<oy+sz+sz) return MoveDir.LEFT;
-        if (x>ox+sz && x<ox+sz+sz && y>oy && y<oy+sz+sz) return MoveDir.DOWN;
-        if (x>ox+sz+sz && x<ox+sz+sz+sz && y>oy && y<oy+sz) return MoveDir.ROTATE_RIGHT;
-        if (x>ox+sz+sz && x<ox+sz+sz+sz && y>oy+sz && y<oy+sz+sz) return MoveDir.ROTATE_RIGHT;
+        float wx = 1/6f;
+        float wy = 0.25f;
+
+        if (x>ox      && x<ox+wx   && y<oy    && y>oy-wy)   return MoveDir.LEFT;
+        if (x>ox      && x<ox+wx   && y<oy-wy && y>oy-wy*2) return MoveDir.ROTATE_LEFT;
+        if (x>ox+wx   && x<ox+wx*2 && y<oy    && y>oy-wy*2) return MoveDir.DOWN;
+        if (x>ox+wx*2 && x<ox+wx*3 && y<oy    && y>oy-wy)   return MoveDir.RIGHT;
+        if (x>ox+wx*2 && x<ox+wx*3 && y<oy-wy && y>oy-wy*2) return MoveDir.ROTATE_RIGHT;
         return MoveDir.INVALID;
     }
 

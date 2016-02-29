@@ -32,6 +32,7 @@ import android.view.SurfaceHolder;
 //sem narveme hlavni loop
 public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Callback{
     private static final String TAG = MyGLSurfaceView.class.getSimpleName();
+    private static final boolean THREADED = false;
     private final MyGLRenderer mRenderer;
     private MainThread main_thread;
 
@@ -55,7 +56,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
 
         // make the GamePanel focusable so it can handle events
         setFocusable(true);
-        main_thread = new MainThread(getHolder(), this);
+        if (THREADED) main_thread = new MainThread(getHolder(), this);
     }
 
     /*public MyGLSurfaceView(Context context, AttributeSet attribs) {
@@ -90,23 +91,29 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        main_thread.setRunning(true);
-        main_thread.start();
+        if (THREADED) {
+            main_thread.setRunning(true);
+            main_thread.start();
+        }
+
         super.surfaceCreated(holder);
         Log.d(TAG,"Created surface, dimensions - x:"+this.getWidth()+ " y:"+this.getHeight());
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        while (retry) {
-            try {
-                main_thread.join();
-                retry = false;
-            } catch (InterruptedException e) {
-                // try again shutting down the thread
+        if (THREADED) {
+            boolean retry = true;
+            while (retry) {
+                try {
+                    main_thread.join();
+                    retry = false;
+                } catch (InterruptedException e) {
+                    // try again shutting down the thread
+                }
             }
         }
+
         super.surfaceDestroyed(holder);
     }
 
@@ -195,8 +202,9 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         }
         */
 
-        int dimx = this.getHeight();
-        int dimy = this.getWidth();
+        int dimx = this.getWidth();
+        int dimy = this.getHeight();
+
         float ratio = (float)dimx/(float)dimy;
         MoveDir left_pad_dir=MoveDir.INVALID,right_pad_dir = MoveDir.INVALID;
 
@@ -206,38 +214,42 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
         float glx1 = 0.0f, glx2 = 0.0f, gly1 = 0.0f, gly2 = 0.0f;
         //na down se provede move
 
-        if (    action ==MotionEvent.ACTION_UP ||
-                action == MotionEvent.ACTION_POINTER_UP ||
-                action == MotionEvent.ACTION_POINTER_2_UP) {
+        if (    action ==MotionEvent.ACTION_UP
+//                ||           action == MotionEvent.ACTION_POINTER_UP
+//                || action == MotionEvent.ACTION_POINTER_2_UP
+        ) {
             //reset all buttons
             mRenderer.left_keypad.pressAllArrows(false);
             mRenderer.right_keypad.pressAllArrows(false);
 
 
         }
-        else {
+        else if (action == MotionEvent.ACTION_DOWN
+                || action == MotionEvent.ACTION_POINTER_2_DOWN
+                || action == MotionEvent.ACTION_POINTER_DOWN
+                )  {
 
 
             if (count>=1) {
                 vx1 = event.getX(0)/dimx;
                 vy1 = event.getY(0)/dimy;
-                glx1 = (vx1-0.5f)*2*ratio;
-                gly1 = (vy1-0.5f)*2;
+//                glx1 = (vx1-0.5f)*2*ratio;
+//                gly1 = (vy1-0.5f)*2*-1;
             }
             if (count>=2) {
                 vx2 = event.getX(1)/dimx;
                 vy2 = event.getY(1)/dimy;
-                glx2 = (vx2-0.5f)*2*ratio;
-                gly2 = (vy2-0.5f)*2;
+//                glx2 = (vx2-0.5f)*2*ratio;
+//                gly2 = (vy2-0.5f)*2*-1;
             }
-//            Log.d(TAG, "Vx1: "+vx1+ " Vy1:"+vy1+" GLX1:"+glx1+" GLY1:"+gly1);
-//            Log.d(TAG, "Vx2: "+vx2+ " Vy2:"+vy2+" GLX2:"+glx2+" GLY2:"+gly2);
+            Log.d(TAG, "Vx1: "+vx1+ " Vy1:"+vy1+" GLX1:"+glx1+" GLY1:"+gly1);
+            Log.d(TAG, "Vx2: "+vx2+ " Vy2:"+vy2+" GLX2:"+glx2+" GLY2:"+gly2);
 
-            MoveDir tmp_dir1 = mRenderer.left_keypad.onPress(glx1,gly1);
-            MoveDir tmp_dir2 = mRenderer.right_keypad.onPress(glx1,gly1);
+            MoveDir tmp_dir1 = mRenderer.left_keypad.onPress(vx1,vy1);
+            MoveDir tmp_dir2 = mRenderer.right_keypad.onPress(vx1,vy1);
 
-            MoveDir tmp_dir3 = mRenderer.left_keypad.onPress(glx2,gly2);
-            MoveDir tmp_dir4 = mRenderer.right_keypad.onPress(glx2,gly2);
+            MoveDir tmp_dir3 = mRenderer.left_keypad.onPress(vx2,vy2);
+            MoveDir tmp_dir4 = mRenderer.right_keypad.onPress(vx2,vy2);
 
 
 

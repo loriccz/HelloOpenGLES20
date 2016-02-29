@@ -89,8 +89,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mStone2 = new Stone(new Coord(0.0f, 0.0f),new RGBA(0.8f,0.1f,0.1f,1.0f)); //cerveny
         mStone2.setSize(1.0f);
 
-        this.left_keypad = new PlayKeypad(true, new Coord(-0.98f,-0.58f));
-        this.right_keypad = new PlayKeypad(false, new Coord(0.45f,-0.58f));
+        this.left_keypad = new PlayKeypad(true, new Coord(-1.7f,-0.7f));
+        this.right_keypad = new PlayKeypad(false, new Coord(0.7f,-0.7f));
     }
 
     @Override
