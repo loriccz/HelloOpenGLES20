@@ -112,36 +112,48 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         // MotionEvent reports input details from the touch screen
         // and other input controls. In this case, you are only
         // interested in events where the touch position changed.
 
-        /*switch (event.getAction()) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+            //prvni dotek
                 Log.d(TAG, "action down");
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 Log.d(TAG, "action pointer down");
+                //
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 Log.d(TAG, "action pointer up");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.d(TAG, "action move");
-                break;
+//                Log.d(TAG, "action move");
+                return true; //!!!
+
             case MotionEvent.ACTION_UP:
                 Log.d(TAG, "action up");
                 break;
-
+            case MotionEvent.ACTION_POINTER_2_DOWN:
+                Log.d(TAG, "pointer 2 down");
+                break;
+            case MotionEvent.ACTION_POINTER_2_UP:
+                Log.d(TAG, "pointer 2 up");
+                break;
+            default:
+                Log.d(TAG, "action undefined? " + event.toString());
         }
 
-        float x = event.getX();
-        float y = event.getY();
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+        int pointers = event.getPointerCount();
 
-        Log.d(TAG, "x:"+x+" y:"+y);
+        Log.d(TAG, "x:"+x+" y:"+y+ " pointers:"+pointers);
 
 
-        return true;*/
+
 
         /*float x = event.getX();
         float y = event.getY();
@@ -181,22 +193,30 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
                 requestRender();
             }
         }
-        return super.onTouchEvent(event);*/
+        */
 
         int dimx = this.getHeight();
         int dimy = this.getWidth();
         float ratio = (float)dimx/(float)dimy;
         MoveDir left_pad_dir=MoveDir.INVALID,right_pad_dir = MoveDir.INVALID;
 
-        if (event.getAction()==MotionEvent.ACTION_UP) {
+        int action =event.getAction();
+        int count=event.getPointerCount();
+        float vx1=0.0f,vy1=0.0f,vx2=0.0f, vy2=0.0f;
+        float glx1 = 0.0f, glx2 = 0.0f, gly1 = 0.0f, gly2 = 0.0f;
+        //na down se provede move
+
+        if (    action ==MotionEvent.ACTION_UP ||
+                action == MotionEvent.ACTION_POINTER_UP ||
+                action == MotionEvent.ACTION_POINTER_2_UP) {
             //reset all buttons
-//            mRenderer.left_keypad.pressAllArrows(false);
-//            mRenderer.right_keypad.pressAllArrows(false);
+            mRenderer.left_keypad.pressAllArrows(false);
+            mRenderer.right_keypad.pressAllArrows(false);
+
+
         }
         else {
-            int count=event.getPointerCount();
-            float vx1=0.0f,vy1=0.0f,vx2=0.0f, vy2=0.0f;
-            float glx1 = 0.0f, glx2 = 0.0f, gly1 = 0.0f, gly2 = 0.0f;
+
 
             if (count>=1) {
                 vx1 = event.getX(0)/dimx;
@@ -210,8 +230,8 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
                 glx2 = (vx2-0.5f)*2*ratio;
                 gly2 = (vy2-0.5f)*2;
             }
-            Log.d(TAG, "Vx1: "+vx1+ " Vy1:"+vy1+" GLX1:"+glx1+" GLY1:"+gly1);
-            Log.d(TAG, "Vx2: "+vx2+ " Vy2:"+vy2+" GLX2:"+glx2+" GLY2:"+gly2);
+//            Log.d(TAG, "Vx1: "+vx1+ " Vy1:"+vy1+" GLX1:"+glx1+" GLY1:"+gly1);
+//            Log.d(TAG, "Vx2: "+vx2+ " Vy2:"+vy2+" GLX2:"+glx2+" GLY2:"+gly2);
 
             MoveDir tmp_dir1 = mRenderer.left_keypad.onPress(glx1,gly1);
             MoveDir tmp_dir2 = mRenderer.right_keypad.onPress(glx1,gly1);
@@ -231,8 +251,10 @@ public class MyGLSurfaceView extends GLSurfaceView implements SurfaceHolder.Call
 
             if (left_pad_dir!=MoveDir.INVALID) mRenderer.left_keypad.pressArrow(left_pad_dir,true);
             if (right_pad_dir!=MoveDir.INVALID) mRenderer.right_keypad.pressArrow(right_pad_dir,true);
-        }
 
+
+        }
+        requestRender(); //??
         return true;
 
     }
